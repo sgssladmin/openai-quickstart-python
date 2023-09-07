@@ -13,8 +13,9 @@ def index():
         animal = request.form["animal"]
         response = openai.Completion.create(
             model="text-davinci-003",
-            prompt=generate_prompt(animal),
-            temperature=0.6,
+            # prompt=generate_prompt(animal),
+            prompt = generate_comments(animal),
+            temperature=1,
         )
         return redirect(url_for("index", result=response.choices[0].text))
 
@@ -24,7 +25,6 @@ def index():
 
 def generate_prompt(animal):
     return """Suggest three names for an animal that is a superhero.
-
 Animal: Cat
 Names: Captain Sharpclaw, Agent Fluffball, The Incredible Feline
 Animal: Dog
@@ -33,3 +33,10 @@ Animal: {}
 Names:""".format(
         animal.capitalize()
     )
+
+def generate_comments(animal):
+    return """
+Help me write some history about this country {}
+""".format(animal)
+
+
